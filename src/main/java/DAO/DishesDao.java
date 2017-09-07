@@ -28,7 +28,7 @@ public class DishesDao implements  InterfaceDAO<Dishes> {
         stmt.setInt(1, model.getDish_id());
         stmt.setString(2, model.getDish_name());
         stmt.setDouble(3, model.getDish_amount());
-        stmt.setDouble(3, model.getDish_price());
+        stmt.setDouble(4, model.getDish_price());
 
         stmt.executeUpdate();
     }
