@@ -1,4 +1,3 @@
-import DAO.OrderDAO;
 import Services.ClientService;
 import Services.DishService;
 import Services.OrderService;
@@ -84,8 +83,7 @@ public class Aplication {
                     new ClientService().create(client);
                     break;
                 case "2":
-
-
+                    makeOrder(client,selectDishes());
                     break;
                 case "3":
 
@@ -127,6 +125,11 @@ public class Aplication {
             System.out.println("***************************");
             System.out.println("Write KODE OF DISH or 0 to finish");
             List<Dishes> dishesFromDataBase = dishDAO.getAllDishes();
+            for (Dishes d : dishesFromDataBase) {
+                System.out.println(d.toString());
+            }
+
+
             selected = br.readLine();
             if (Integer.parseInt(selected) == 0) {
                 flag = false;
@@ -138,21 +141,19 @@ public class Aplication {
         return selectedDishes;
     }
 
-    public void makeOrder(Client client, ArrayList<Dishes> dishes) {
-        Order order=new Order();
-        OrderDAO orderDAO = new OrderService();
+    public void makeOrder(Client client, ArrayList<Dishes> dishes) throws SQLException {
+        Order order = new Order();
+        OrderService orderDAO = new OrderService();
 
+        for (Dishes dish : dishes) {
 
-        dish.setDish_amount(Double.valueOf(2));
-        dish.setDish_price(Double.valueOf(25));
-        dish.setDish_id(25);
-        dish.setDish_name("Holodets");
-        new DishService().create(dish);
-        List<Dishes> dishes = dishDAO.getAllDishes();
+            order.setClient_id(client.getId());
+            order.setDish_id(dish.getDish_id());
 
-        for (Dishes d : dishes) {
-            System.out.println(d.toString());
+            new OrderService().create(order);
+            order=new Order();
         }
+
 
     }
 }
