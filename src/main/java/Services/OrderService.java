@@ -21,16 +21,20 @@ public class OrderService {
         new OrderDAO().delete(order);
     }
 
+    public void deleteOrderByClientID(Integer id) throws SQLException {
+        new OrderDAO().deleteOrderByClentId(id);
+    }
+
     public Order getOrdersById(Integer id) throws SQLException {
-        return new OrderDAO().getDishesById(id);
+        return new OrderDAO().getOrderById(id);
     }
 
     public List<Order> getAllOrders() throws SQLException {
         return new OrderDAO().getAll();
     }
 
-    public Double getScoreByClientID(Integer id) throws SQLException {
-        return new OrderDAO().getScoreById(id);
+    public Double getBillByClientID(Integer id) throws SQLException {
+        return new OrderDAO().getBillById(id);
     }
 
 }

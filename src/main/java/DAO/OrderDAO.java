@@ -4,7 +4,6 @@ import model.Order;
 import persistant.ConnectionManager;
 import transformer.DoubleTransformer;
 import transformer.OrderTransformer;
-import transformer.UniversalTransformer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +20,7 @@ public class OrderDAO implements InterfaceDAO<Order> {
     private final String INSERT_NEW_ORDER = "INSERT INTO orders (client_id , dish_id ) VALUES ( ?,?)";
     private final String UPDATE_ORDER = "UPDATE orders SET dish_name = 'Sousage' WHERE id = ?";
     private final String DELETE_ORDER = "DELETE FROM orders WHERE order_id  = ?";
+    private final String DELETE_ORDER_BY_CLIENT_ID = "DELETE FROM orders WHERE client_id  = ?";
     private final String GET_ALL_ORDERS = "SELECT * FROM orders";
 
 
@@ -30,11 +30,12 @@ public class OrderDAO implements InterfaceDAO<Order> {
 
         PreparedStatement stmt = conn.prepareStatement(INSERT_NEW_ORDER);
 
-       // stmt.setInt(1, model.getId());
+        // stmt.setInt(1, model.getId());
         stmt.setInt(1, model.getClient_id());
         stmt.setInt(2, model.getDish_id());
 
-        stmt.executeUpdate();        conn.commit();
+        stmt.executeUpdate();
+        conn.commit();
 
     }
 
@@ -43,7 +44,8 @@ public class OrderDAO implements InterfaceDAO<Order> {
         Connection conn = ConnectionManager.getConnection();
         PreparedStatement stmt = conn.prepareStatement(UPDATE_ORDER);
         stmt.setInt(1, model.getId());
-        stmt.executeUpdate();        conn.commit();
+        stmt.executeUpdate();
+        conn.commit();
 
     }
 
@@ -52,10 +54,22 @@ public class OrderDAO implements InterfaceDAO<Order> {
         Connection conn = ConnectionManager.getConnection();
         PreparedStatement stmt = conn.prepareStatement(DELETE_ORDER);
         stmt.setInt(1, model.getId());
-        stmt.executeUpdate();        conn.commit();
+        stmt.executeUpdate();
+        conn.commit();
 
     }
-    public Double getScoreById(Integer id) throws SQLException {
+
+
+    public void deleteOrderByClentId(Integer id) throws SQLException {
+        Connection conn = ConnectionManager.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(DELETE_ORDER_BY_CLIENT_ID);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+        conn.commit();
+
+    }
+
+    public Double getBillById(Integer id) throws SQLException {
         Double result = null;
         Connection conn = ConnectionManager.getConnection();
 
@@ -65,7 +79,8 @@ public class OrderDAO implements InterfaceDAO<Order> {
         result = new DoubleTransformer().fromResultSetToObject(rs);
         return result;
     }
-    public Order getDishesById(Integer id) throws SQLException {
+
+    public Order getOrderById(Integer id) throws SQLException {
         Order result = null;
 
         Connection conn = ConnectionManager.getConnection();
