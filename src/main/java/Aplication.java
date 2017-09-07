@@ -1,6 +1,7 @@
 import Services.ClientService;
 import Services.DishService;
 import Services.OrderService;
+import constants.Constants;
 import model.Client;
 import model.Dishes;
 import model.Order;
@@ -30,7 +31,7 @@ public class Aplication {
     public void DishesTable() throws SQLException {
         Dishes dish = new Dishes();
         DishService dishDAO = new DishService();
-
+        Constants.LOG.info("Was chosen Serialization");
 
         dish.setDish_amount(Double.valueOf(2));
         dish.setDish_price(Double.valueOf(25));
