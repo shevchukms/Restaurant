@@ -29,4 +29,8 @@ public class OrderService {
         return new OrderDAO().getAll();
     }
 
+    public Double getScoreByClientID(Integer id) throws SQLException {
+        return new OrderDAO().getScoreById(id);
+    }
+
 }

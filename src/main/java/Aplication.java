@@ -12,9 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mykola on 07.09.2017.
- */
+
 public class Aplication {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,6 +22,8 @@ public class Aplication {
 
         ClientsTable();
         DishesTable();
+
+
         work();
     }
 
@@ -65,16 +65,14 @@ public class Aplication {
     public void work() throws IOException, SQLException {
         boolean flag = true;
 
-
+        Client client = new Client();
+        List<Dishes> dishes = new ArrayList<>();
         while (flag) {
             System.out.println("***************************");
             System.out.println("press 1 - To take a sit");
             System.out.println("press 2 - Make order");
             System.out.println("press 3 - ask for an invoice ");
             System.out.println("press 0 - Exit");
-
-            Client client = new Client();
-            List<Dishes> dishes = new ArrayList<>();
 
             selected = br.readLine();
             switch (selected) {
@@ -83,10 +81,10 @@ public class Aplication {
                     new ClientService().create(client);
                     break;
                 case "2":
-                    makeOrder(client,selectDishes());
+                    makeOrder(client, selectDishes());
                     break;
                 case "3":
-
+                    calculateScore(client);
                     break;
 
                 case "0":
@@ -135,7 +133,7 @@ public class Aplication {
                 flag = false;
             } else {
 
-                selectDishes().add(dishDAO.getDishesById(Integer.parseInt(selected)));
+                selectedDishes.add(dishDAO.getDishesById(Integer.parseInt(selected)));
             }
         }
         return selectedDishes;
@@ -149,11 +147,18 @@ public class Aplication {
 
             order.setClient_id(client.getId());
             order.setDish_id(dish.getDish_id());
-
             new OrderService().create(order);
-            order=new Order();
+            order = new Order();
         }
 
+
+    }
+
+    public void calculateScore(Client client) throws SQLException {
+        Order order = new Order();
+        OrderService orderDAO = new OrderService();
+
+        System.out.println("The amount for payment is ="+ orderDAO.getScoreByClientID(client.getId()));
 
     }
 }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by Mykola on 07.09.2017.
  */
-public class UniversalTransformer<T extends AbstractModel> {
+public class UniversalTransformer<T > {
 
     public T fromResultSetToObject(ResultSet rs, Class<T> classT) throws SQLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 

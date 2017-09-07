@@ -6,9 +6,7 @@ import model.Dishes;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Mykola on 07.09.2017.
- */
+
 public class DishTransformer {
     public Dishes fromResultSetToObject(ResultSet rs) throws SQLException {
 

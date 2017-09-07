@@ -1,7 +1,6 @@
 package DAO;
 
 
-import Services.ClientService;
 import Services.DishService;
 import model.Dishes;
 import persistant.ConnectionManager;
