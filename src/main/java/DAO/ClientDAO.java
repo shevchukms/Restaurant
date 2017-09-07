@@ -1,6 +1,6 @@
 package DAO;
 
-import model.AbstractModel;
+import Services.ClientService;
 import model.Client;
 import persistant.ConnectionManager;
 import transformer.ClientTransformer;
@@ -15,22 +15,29 @@ import java.util.List;
 /**
  * Created by Mykola on 07.09.2017.
  */
-public class ClientDAO implements  InterfaceDAO<Client> {
+public class ClientDAO implements InterfaceDAO<Client> {
     private final String GET_CLIENT_BY_ID = "SELECT client_id ,client_name,client_number_of_table FROM clients WHERE client_id = ?";
     private final String INSERT_NEW_CLIENT = "INSERT INTO clients (client_id ,client_name,client_number_of_table) VALUES (?,?, ?)";
     private final String UPDATE_CLIENT = "UPDATE clients SET client_name = 'Max' WHERE id = ?";
     private final String DELETE_CLIENT = "DELETE FROM clients WHERE client_id = ?";
     private final String GET_ALL_CLIENTS = "SELECT * FROM clients";
+
     public void create(Client model) throws SQLException {
         Connection conn = ConnectionManager.getConnection();
+if (!thereIsTheSameClient(model)) {
+    PreparedStatement stmt = conn.prepareStatement(INSERT_NEW_CLIENT);
 
-        PreparedStatement stmt = conn.prepareStatement(INSERT_NEW_CLIENT);
+    stmt.setInt(1, model.getId());
+    stmt.setString(2, model.getName());
+    stmt.setInt(3, model.getTableNumber());
 
-        stmt.setInt(1, model.getId());
-        stmt.setString(2, model.getName());
-        stmt.setInt(3, model.getTableNumber());
-
-        stmt.executeUpdate();
+    stmt.executeUpdate();
+    // stmt.close();
+    conn.commit();
+}
+    else{
+    System.out.println("This person is already sitting");
+}
     }
 
     public void update(Client model) throws SQLException {
@@ -38,6 +45,7 @@ public class ClientDAO implements  InterfaceDAO<Client> {
         PreparedStatement stmt = conn.prepareStatement(UPDATE_CLIENT);
         stmt.setInt(1, model.getId());
         stmt.executeUpdate();
+        conn.commit();
     }
 
     public void delete(Client model) throws SQLException {
@@ -45,6 +53,30 @@ public class ClientDAO implements  InterfaceDAO<Client> {
         PreparedStatement stmt = conn.prepareStatement(DELETE_CLIENT);
         stmt.setInt(1, model.getId());
         stmt.executeUpdate();
+        conn.commit();
+    }
+
+    public Boolean tableIsFree(Client model) throws SQLException {
+        Boolean flag = false;
+        ClientService clientDAO = new ClientService();
+        List<Client> clients = clientDAO.getAllClients();
+        for (Client cl : clients) {
+            if (!cl.getTableNumber().equals( model.getTableNumber())) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+    public Boolean thereIsTheSameClient(Client model) throws SQLException {
+        Boolean flag = false;
+        ClientService clientDAO = new ClientService();
+        List<Client> clients = clientDAO.getAllClients();
+        for (Client cl : clients) {
+            if (cl.equals(model)) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     public Client getStudentById(Integer id) throws SQLException {
@@ -60,6 +92,7 @@ public class ClientDAO implements  InterfaceDAO<Client> {
 
         return result;
     }
+
     public List<Client> getAll() throws SQLException {
 
         List<Client> listClients = new ArrayList<Client>();

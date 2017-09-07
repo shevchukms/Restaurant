@@ -38,4 +38,24 @@ public class Client extends AbstractModel {
                 ", tableNumber=" + tableNumber +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (!id.equals(client.id)) return false;
+        if (!name.equals(client.name)) return false;
+        return tableNumber.equals(client.tableNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + tableNumber.hashCode();
+        return result;
+    }
 }

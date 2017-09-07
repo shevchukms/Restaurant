@@ -49,4 +49,26 @@ public class Dishes extends AbstractModel {
     public void setDish_price(Double dish_price) {
         this.dish_price = dish_price;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dishes dishes = (Dishes) o;
+
+        if (!dish_id.equals(dishes.dish_id)) return false;
+        if (!dish_name.equals(dishes.dish_name)) return false;
+        if (!dish_amount.equals(dishes.dish_amount)) return false;
+        return dish_price.equals(dishes.dish_price);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = dish_id.hashCode();
+        result = 31 * result + dish_name.hashCode();
+        result = 31 * result + dish_amount.hashCode();
+        result = 31 * result + dish_price.hashCode();
+        return result;
+    }
 }

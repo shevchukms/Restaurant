@@ -11,9 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mykola on 07.09.2017.
- */
+
 public class OrderDAO implements InterfaceDAO<Order> {
 
     private final String GET_ORDERS_BY_ID = "SELECT dish_id, dish_name,dish_amount,dish_price FROM dishes WHERE dish_id = ?";
@@ -32,7 +30,8 @@ public class OrderDAO implements InterfaceDAO<Order> {
         stmt.setInt(2, model.getClient_id());
         stmt.setInt(3, model.getDish_id());
 
-        stmt.executeUpdate();
+        stmt.executeUpdate();        conn.commit();
+
     }
 
     @Override
@@ -40,7 +39,8 @@ public class OrderDAO implements InterfaceDAO<Order> {
         Connection conn = ConnectionManager.getConnection();
         PreparedStatement stmt = conn.prepareStatement(UPDATE_ORDER);
         stmt.setInt(1, model.getId());
-        stmt.executeUpdate();
+        stmt.executeUpdate();        conn.commit();
+
     }
 
     @Override
@@ -48,7 +48,8 @@ public class OrderDAO implements InterfaceDAO<Order> {
         Connection conn = ConnectionManager.getConnection();
         PreparedStatement stmt = conn.prepareStatement(DELETE_ORDER);
         stmt.setInt(1, model.getId());
-        stmt.executeUpdate();
+        stmt.executeUpdate();        conn.commit();
+
     }
 
     public Order getDishesById(Integer id) throws SQLException {

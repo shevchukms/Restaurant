@@ -1,8 +1,6 @@
 package model;
 
-/**
- * Created by Mykola on 07.09.2017.
- */
+
 public class Order extends AbstractModel {
     private Integer id;
     private Integer client_id;
